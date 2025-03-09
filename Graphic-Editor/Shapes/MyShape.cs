@@ -8,9 +8,9 @@ using System.Windows.Controls;
 using System.Windows.Shapes;
 
 namespace Graphic_Editor {
-    internal class MyShape {
+    internal abstract class MyShape {
         public System.Windows.Media.Color color { get; set; }
 
-        public virtual void Draw(Canvas canvas) { }
+        public abstract void Draw(Canvas canvas);
     }
 }

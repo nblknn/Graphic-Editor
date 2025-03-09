@@ -10,7 +10,7 @@ using System.Windows.Shapes;
 
 namespace Graphic_Editor {
     internal class MyPolygon : MyShape {
-        private PointCollection points { get; set; }
+        public PointCollection points { get; set; }
 
         public MyPolygon(PointCollection points, Color color) {
             this.points = points;

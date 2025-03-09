@@ -9,10 +9,10 @@ using System.Windows.Shapes;
 
 namespace Graphic_Editor {
     internal class MyRectangle : MyShape {
-        private int x1 { get; set; }
-        private int y1 { get; set; }
-        private int x2 { get; set; }
-        private int y2 { get; set; }
+        public int x1 { get; set; }
+        public int y1 { get; set; }
+        public int x2 { get; set; }
+        public int y2 { get; set; }
 
         public MyRectangle(int x1, int y1, int x2, int y2, Color color) {
             this.x1 = x1;

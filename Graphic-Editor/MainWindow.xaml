@@ -4,9 +4,94 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Graphic_Editor"
+        xmlns:clrp="clr-namespace:ColorPicker;assembly=ColorPicker"
         mc:Ignorable="d"
-        Title="nbldtr" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Title="nbldtr" Height="450" Width="800" MinHeight="350" MinWidth="500" WindowStartupLocation="CenterScreen">
     <Grid Name="MainGrid">
-        <Canvas Name="MainCanvas"></Canvas>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="10*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"></ColumnDefinition>
+            <ColumnDefinition Width="10*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <Menu Grid.Row="0" Grid.ColumnSpan="2">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Открыть..."></MenuItem>
+                <MenuItem Header="Сохранить"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Редактировать">
+                <MenuItem Header="Отменить"></MenuItem>
+                <MenuItem Header="Повторить"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Плагины">
+                <MenuItem Header="Загрузить"></MenuItem>
+            </MenuItem>
+        </Menu>
+        
+        <Border Grid.Row="1" Grid.Column="0" BorderBrush="LightGray" BorderThickness="0 0 1 0">
+            <Grid Background="WhiteSmoke">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="170"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="7*"></RowDefinition>
+                </Grid.RowDefinitions>
+                
+                <Grid Name="ColorPick" Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10*"></RowDefinition>
+                        <RowDefinition Height="3*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <clrp:SquarePicker Grid.Row="0" Name="ColorPicker"/>
+                    <clrp:ColorDisplay Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   ColorState="{Binding ElementName=ColorPicker,Path=ColorState,Mode=TwoWay}" Margin="10,0,0,0" Height="35" Width="35"/>
+                    <Label Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Контур/&#10;     Заливка"/>
+                </Grid>
+                
+                <Label Grid.Row="1">Толщина контура</Label>
+                <Slider Name="SliderLineWidth" Grid.Row="1" VerticalAlignment="Bottom" Minimum="0" Maximum="50" IsSnapToTickEnabled="True"
+                        TickFrequency="0.5" Margin="5" Value="1"/>
+                <Label Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Content="{Binding ElementName=SliderLineWidth,Path=Value}"/>
+
+                <ScrollViewer Grid.Row="2">
+                    <StackPanel Name="ShapePanel">
+                        <RadioButton Style="{StaticResource {x:Type ToggleButton}}">
+                            <StackPanel Orientation="Horizontal">
+                                <Label MinWidth="90" VerticalAlignment="Center">Линия</Label>
+                                <Image Source="./Images/line.png" MaxWidth="30"/>
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource {x:Type ToggleButton}}">
+                            <StackPanel Orientation="Horizontal">
+                                <Label MinWidth="90" VerticalAlignment="Center">Ломаная</Label>
+                                <Image Source="./Images/polyline.png" MaxWidth="30"/>
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource {x:Type ToggleButton}}">
+                            <StackPanel Orientation="Horizontal">
+                                <Label MinWidth="90" VerticalAlignment="Center">Прямоугольник</Label>
+                                <Image Source="./Images/rectangle.png" MaxWidth="30"/>
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource {x:Type ToggleButton}}">
+                            <StackPanel Orientation="Horizontal">
+                                <Label MinWidth="90" VerticalAlignment="Center">Многоугольник</Label>
+                                <Image Source="./Images/polygon.png" MaxWidth="30"/>
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource {x:Type ToggleButton}}">
+                            <StackPanel Orientation="Horizontal">
+                                <Label MinWidth="90" VerticalAlignment="Center">Эллипс</Label>
+                                <Image Source="./Images/ellipse.png" MaxWidth="30"/>
+                            </StackPanel>
+                        </RadioButton>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+        
+        <Canvas Name="MainCanvas" Grid.Row="1" Grid.Column="1"></Canvas>
     </Grid>
 </Window>

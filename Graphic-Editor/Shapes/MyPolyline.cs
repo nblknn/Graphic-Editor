@@ -10,7 +10,7 @@ using System.Windows.Shapes;
 
 namespace Graphic_Editor {
     internal class MyPolyline : MyShape {
-        private PointCollection points { get; set; }
+        public PointCollection points { get; set; }
 
         public MyPolyline(PointCollection points, Color color) {
             this.points = points;
