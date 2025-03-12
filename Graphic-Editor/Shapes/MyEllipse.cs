@@ -6,31 +6,42 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows;
 
-namespace Graphic_Editor {
+namespace Graphic_Editor.Shapes {
     internal class MyEllipse : MyShape {
         public int height { get; set; }
         public int width { get; set; }
-        public int xcenter { get; set; }
-        public int ycenter { get; set; }
+        public Point center { get; set; }
 
-        public MyEllipse(int height, int width, int xcenter, int ycenter, Color color) {
+        public MyEllipse(Point startPoint, Color outlineColor, Color fillColor, double outlineThickness) {
+            this.height = 0;
+            this.width = 0;
+            this.center = startPoint;
+            this.outlineColor = outlineColor;
+            this.fillColor = fillColor;
+            this.outlineThickness = outlineThickness;
+        }
+
+        public MyEllipse(int height, int width, Point center, Color outlineColor, Color fillColor, double outlineThickness) {
             this.height = height;
             this.width = width;
-            this.xcenter = xcenter;
-            this.ycenter = ycenter;
-            this.color = color;
+            this.center = center;
+            this.outlineColor = outlineColor;
+            this.fillColor = fillColor;
+            this.outlineThickness = outlineThickness;
         }
 
         public override void Draw(Canvas canvas) {
             Ellipse ellipse = new Ellipse();
             ellipse.Height = height;
             ellipse.Width = width;
-            ellipse.Stroke = new SolidColorBrush(color);
-            ellipse.Fill = new SolidColorBrush(color);
+            ellipse.Stroke = new SolidColorBrush(outlineColor);
+            ellipse.Fill = new SolidColorBrush(fillColor);
+            ellipse.StrokeThickness = outlineThickness;
             canvas.Children.Add(ellipse);
-            Canvas.SetLeft(ellipse, xcenter - width / 2);
-            Canvas.SetTop(ellipse, ycenter - height / 2);
+            Canvas.SetLeft(ellipse, center.X - width / 2);
+            Canvas.SetTop(ellipse, center.Y - height / 2);
         }
     }
 }

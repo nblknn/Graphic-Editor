@@ -6,31 +6,39 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows;
 
-namespace Graphic_Editor {
+namespace Graphic_Editor.Shapes {
     internal class MyRectangle : MyShape {
-        public int x1 { get; set; }
-        public int y1 { get; set; }
-        public int x2 { get; set; }
-        public int y2 { get; set; }
+        public Point point1 { get; set; }
+        public Point point2 { get; set; }
 
-        public MyRectangle(int x1, int y1, int x2, int y2, Color color) {
-            this.x1 = x1;
-            this.y1 = y1;
-            this.x2 = x2;
-            this.y2 = y2;
-            this.color = color;
+        public MyRectangle(Point startPoint, Color outlineColor, Color fillColor, double outlineThickness) {
+            this.point1 = startPoint;
+            this.point2 = startPoint;
+            this.outlineColor = outlineColor;
+            this.fillColor = fillColor;
+            this.outlineThickness = outlineThickness;
+        }
+
+        public MyRectangle(Point point1, Point point2, Color outlineColor, Color fillColor, double outlineThickness) {
+            this.point1 = point1;
+            this.point2 = point2;
+            this.outlineColor = outlineColor;
+            this.fillColor = fillColor;
+            this.outlineThickness = outlineThickness;
         }
 
         public override void Draw(Canvas canvas) {
             Rectangle rectangle = new Rectangle();
-            rectangle.Height = Math.Abs(y2 - y1);
-            rectangle.Width = Math.Abs(x2 - x1);
-            rectangle.Stroke = new SolidColorBrush(color);
-            rectangle.Fill = new SolidColorBrush(color);
+            rectangle.Height = Math.Abs(point2.Y - point1.Y);
+            rectangle.Width = Math.Abs(point2.X - point1.X);
+            rectangle.Stroke = new SolidColorBrush(outlineColor);
+            rectangle.Fill = new SolidColorBrush(fillColor);
+            rectangle.StrokeThickness = outlineThickness;
             canvas.Children.Add(rectangle);
-            Canvas.SetLeft(rectangle, Math.Min(x1, x2));
-            Canvas.SetTop(rectangle, Math.Min(y1, y2));
+            Canvas.SetLeft(rectangle, Math.Min(point1.X, point2.X));
+            Canvas.SetTop(rectangle, Math.Min(point1.Y, point2.Y));
         }
     }
 }

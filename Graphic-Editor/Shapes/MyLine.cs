@@ -6,29 +6,34 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows;
 
-namespace Graphic_Editor {
+namespace Graphic_Editor.Shapes {
     internal class MyLine : MyShape {
-        public int x1 { get; set; }
-        public int y1 { get; set; }
-        public int x2 { get; set; }
-        public int y2 { get; set; }
+        public Point point1 { get; set; }
+        public Point point2 { get; set; }
+        public MyLine(Point startPoint, Color outlineColor, Color fillColor, double outlineThickness) {
+            this.point1 = startPoint;
+            this.point2 = startPoint;
+            this.outlineColor = outlineColor;
+            this.outlineThickness = outlineThickness;
+        }
 
-        public MyLine(int x1, int y1, int x2, int y2, Color color) {
-            this.x1 = x1;
-            this.y1 = y1;
-            this.x2 = x2;
-            this.y2 = y2;
-            this.color = color;
+        public MyLine(Point point1, Point point2, Color color, double outlineThickness) {
+            this.point1 = point1;
+            this.point2 = point2;
+            this.outlineColor = color;
+            this.outlineThickness = outlineThickness;
         }
 
         public override void Draw(Canvas canvas) {
             Line line = new Line();
-            line.X1 = x1;
-            line.Y1 = y1;
-            line.X2 = x2;
-            line.Y2 = y2;
-            line.Stroke = new SolidColorBrush(color);
+            line.X1 = point1.X;
+            line.Y1 = point1.Y;
+            line.X2 = point2.X;
+            line.Y2 = point2.Y;
+            line.Stroke = new SolidColorBrush(outlineColor);
+            line.StrokeThickness = outlineThickness;
             canvas.Children.Add(line);
         }
     }
