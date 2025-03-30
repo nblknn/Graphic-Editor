@@ -10,38 +10,45 @@ using System.Windows;
 
 namespace Graphic_Editor.Shapes {
     internal class MyEllipse : MyShape {
-        public int height { get; set; }
-        public int width { get; set; }
-        public Point center { get; set; }
+        public Point point1 { get; set; }
+        public Point point2 { get; set; }
+        private Ellipse drawnEllipse;
 
         public MyEllipse(Point startPoint, Color outlineColor, Color fillColor, double outlineThickness) {
-            this.height = 0;
-            this.width = 0;
-            this.center = startPoint;
+            point1 = startPoint;
+            point2 = startPoint;
             this.outlineColor = outlineColor;
             this.fillColor = fillColor;
             this.outlineThickness = outlineThickness;
+            drawnEllipse = new Ellipse();
         }
 
-        public MyEllipse(int height, int width, Point center, Color outlineColor, Color fillColor, double outlineThickness) {
-            this.height = height;
-            this.width = width;
-            this.center = center;
+        public MyEllipse(Point point1, Point point2, Color outlineColor, Color fillColor, double outlineThickness) {
+            this.point1 = point1;
+            this.point2 = point2;
             this.outlineColor = outlineColor;
             this.fillColor = fillColor;
             this.outlineThickness = outlineThickness;
+            drawnEllipse = new Ellipse();
         }
 
         public override void Draw(Canvas canvas) {
-            Ellipse ellipse = new Ellipse();
-            ellipse.Height = height;
-            ellipse.Width = width;
-            ellipse.Stroke = new SolidColorBrush(outlineColor);
-            ellipse.Fill = new SolidColorBrush(fillColor);
-            ellipse.StrokeThickness = outlineThickness;
-            canvas.Children.Add(ellipse);
-            Canvas.SetLeft(ellipse, center.X - width / 2);
-            Canvas.SetTop(ellipse, center.Y - height / 2);
+            drawnEllipse.Height = Math.Abs(point2.Y - point1.Y);
+            drawnEllipse.Width = Math.Abs(point2.X - point1.X);
+            drawnEllipse.Stroke = new SolidColorBrush(outlineColor);
+            drawnEllipse.Fill = new SolidColorBrush(fillColor);
+            drawnEllipse.StrokeThickness = outlineThickness;
+            canvas.Children.Add(drawnEllipse);
+            Canvas.SetLeft(drawnEllipse, Math.Min(point1.X, point2.X));
+            Canvas.SetTop(drawnEllipse, Math.Min(point1.Y, point2.Y));
+        }
+
+        public override void Redraw(Point nextPoint) {
+            point2 = nextPoint;
+            drawnEllipse.Height = Math.Abs(point2.Y - point1.Y);
+            drawnEllipse.Width = Math.Abs(point2.X - point1.X);
+            Canvas.SetLeft(drawnEllipse, Math.Min(point1.X, point2.X));
+            Canvas.SetTop(drawnEllipse, Math.Min(point1.Y, point2.Y));
         }
     }
 }

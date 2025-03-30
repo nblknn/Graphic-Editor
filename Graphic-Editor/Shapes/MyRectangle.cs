@@ -12,6 +12,7 @@ namespace Graphic_Editor.Shapes {
     internal class MyRectangle : MyShape {
         public Point point1 { get; set; }
         public Point point2 { get; set; }
+        private Rectangle drawnRectangle;
 
         public MyRectangle(Point startPoint, Color outlineColor, Color fillColor, double outlineThickness) {
             this.point1 = startPoint;
@@ -19,6 +20,7 @@ namespace Graphic_Editor.Shapes {
             this.outlineColor = outlineColor;
             this.fillColor = fillColor;
             this.outlineThickness = outlineThickness;
+            drawnRectangle = new Rectangle();
         }
 
         public MyRectangle(Point point1, Point point2, Color outlineColor, Color fillColor, double outlineThickness) {
@@ -27,18 +29,26 @@ namespace Graphic_Editor.Shapes {
             this.outlineColor = outlineColor;
             this.fillColor = fillColor;
             this.outlineThickness = outlineThickness;
+            drawnRectangle = new Rectangle();
         }
 
         public override void Draw(Canvas canvas) {
-            Rectangle rectangle = new Rectangle();
-            rectangle.Height = Math.Abs(point2.Y - point1.Y);
-            rectangle.Width = Math.Abs(point2.X - point1.X);
-            rectangle.Stroke = new SolidColorBrush(outlineColor);
-            rectangle.Fill = new SolidColorBrush(fillColor);
-            rectangle.StrokeThickness = outlineThickness;
-            canvas.Children.Add(rectangle);
-            Canvas.SetLeft(rectangle, Math.Min(point1.X, point2.X));
-            Canvas.SetTop(rectangle, Math.Min(point1.Y, point2.Y));
+            drawnRectangle.Height = Math.Abs(point2.Y - point1.Y);
+            drawnRectangle.Width = Math.Abs(point2.X - point1.X);
+            drawnRectangle.Stroke = new SolidColorBrush(outlineColor);
+            drawnRectangle.Fill = new SolidColorBrush(fillColor);
+            drawnRectangle.StrokeThickness = outlineThickness;
+            canvas.Children.Add(drawnRectangle);
+            Canvas.SetLeft(drawnRectangle, Math.Min(point1.X, point2.X));
+            Canvas.SetTop(drawnRectangle, Math.Min(point1.Y, point2.Y));
+        }
+
+        public override void Redraw(Point nextPoint) {
+            point2 = nextPoint;
+            drawnRectangle.Height = Math.Abs(point2.Y - point1.Y);
+            drawnRectangle.Width = Math.Abs(point2.X - point1.X);
+            Canvas.SetLeft(drawnRectangle, Math.Min(point1.X, point2.X));
+            Canvas.SetTop(drawnRectangle, Math.Min(point1.Y, point2.Y));
         }
     }
 }

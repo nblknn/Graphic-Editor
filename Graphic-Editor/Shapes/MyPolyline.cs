@@ -9,28 +9,39 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace Graphic_Editor.Shapes {
-    internal class MyPolyline : MyShape {
-        public PointCollection points { get; set; }
+    internal class MyPolyline : MyComplexShape {
+        private Polyline drawnPolyline;
 
         public MyPolyline(Point startPoint, Color outlineColor, Color fillColor, double outlineThickness) {
             this.points = new PointCollection() { startPoint };
             this.outlineColor = outlineColor;
             this.fillColor = fillColor;
             this.outlineThickness = outlineThickness;
+            drawnPolyline = new Polyline();
         }
 
         public MyPolyline(PointCollection points, Color outlineColor, double outlineThickness) {
             this.points = points;
             this.outlineColor = outlineColor;
             this.outlineThickness = outlineThickness;
+            drawnPolyline = new Polyline();
         }
 
         public override void Draw(Canvas canvas) {
-            Polyline polyline = new Polyline();
-            polyline.Points = points;
-            polyline.Stroke = new SolidColorBrush(outlineColor);
-            polyline.StrokeThickness = outlineThickness;
-            canvas.Children.Add(polyline);
+            drawnPolyline.Points = points;
+            drawnPolyline.Stroke = new SolidColorBrush(outlineColor);
+            drawnPolyline.StrokeThickness = outlineThickness;
+            canvas.Children.Add(drawnPolyline);
+        }
+
+        public override void AddPoint(Point point) {
+            points.Add(point);
+            drawnPolyline.Points.Add(point);
+        }
+
+        public override void Redraw(Point nextPoint) {
+            points[points.Count - 1] = nextPoint;
+            drawnPolyline.Points[points.Count - 1] = nextPoint;
         }
     }
 }

@@ -7,6 +7,9 @@
         xmlns:clrp="clr-namespace:ColorPicker;assembly=ColorPicker"
         mc:Ignorable="d"
         Title="nbldtr" Height="450" Width="800" MinHeight="350" MinWidth="500" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="RadioButton"/>
+    </Window.Resources>
     <Grid Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>
@@ -19,12 +22,12 @@
         
         <Menu Grid.Row="0" Grid.ColumnSpan="2">
             <MenuItem Header="Файл">
-                <MenuItem Header="Открыть..."></MenuItem>
-                <MenuItem Header="Сохранить"></MenuItem>
+                <MenuItem Header="Открыть..." InputGestureText="Ctrl+O"></MenuItem>
+                <MenuItem Header="Сохранить" InputGestureText="Ctrl+S"></MenuItem>
             </MenuItem>
             <MenuItem Header="Редактировать">
-                <MenuItem Header="Отменить"></MenuItem>
-                <MenuItem Header="Повторить"></MenuItem>
+                <MenuItem Header="Отменить" InputGestureText="Ctrl+Z"></MenuItem>
+                <MenuItem Header="Повторить" InputGestureText="Ctrl+Y"></MenuItem>
             </MenuItem>
             <MenuItem Header="Плагины">
                 <MenuItem Header="Загрузить"></MenuItem>
@@ -39,59 +42,29 @@
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 
-                <Grid Name="ColorPick" Grid.Row="0">
+                <Grid Grid.Row="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="10*"></RowDefinition>
                         <RowDefinition Height="3*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <clrp:SquarePicker Grid.Row="0" Name="ColorPicker"/>
-                    <clrp:ColorDisplay Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"
-                                   ColorState="{Binding ElementName=ColorPicker,Path=ColorState,Mode=TwoWay}" Margin="10,0,0,0" Height="35" Width="35"/>
+                    <clrp:SquarePicker Grid.Row="0" Name="colorPicker" ColorChanged="colorPicker_ColorChanged"/>
+                    <clrp:ColorDisplay Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Name="colorDisplay"
+                                   ColorState="{Binding ElementName=colorPicker,Path=ColorState,Mode=TwoWay}" Margin="10,0,0,0"
+                                       Height="35" Width="35" MouseLeave="colorDisplay_MouseLeave"/>
                     <Label Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Контур/&#10;     Заливка"/>
                 </Grid>
                 
                 <Label Grid.Row="1">Толщина контура</Label>
-                <Slider Name="SliderLineWidth" Grid.Row="1" VerticalAlignment="Bottom" Minimum="0" Maximum="50" IsSnapToTickEnabled="True"
-                        TickFrequency="0.5" Margin="5" Value="1"/>
-                <Label Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Content="{Binding ElementName=SliderLineWidth,Path=Value}"/>
+                <Slider Name="sliderOutlineThickness" Grid.Row="1" VerticalAlignment="Bottom" Minimum="0" Maximum="50" IsSnapToTickEnabled="True"
+                        TickFrequency="0.5" Margin="5" ValueChanged="sliderOutlineThickness_ValueChanged"/>
+                <Label Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Content="{Binding ElementName=sliderOutlineThickness,Path=Value}"/>
 
                 <ScrollViewer Grid.Row="2">
-                    <StackPanel Name="ShapePanel">
-                        <RadioButton Style="{StaticResource {x:Type ToggleButton}}">
-                            <StackPanel Orientation="Horizontal">
-                                <Label MinWidth="90" VerticalAlignment="Center">Линия</Label>
-                                <Image Source="./Images/line.png" MaxWidth="30"/>
-                            </StackPanel>
-                        </RadioButton>
-                        <RadioButton Style="{StaticResource {x:Type ToggleButton}}">
-                            <StackPanel Orientation="Horizontal">
-                                <Label MinWidth="90" VerticalAlignment="Center">Ломаная</Label>
-                                <Image Source="./Images/polyline.png" MaxWidth="30"/>
-                            </StackPanel>
-                        </RadioButton>
-                        <RadioButton Style="{StaticResource {x:Type ToggleButton}}">
-                            <StackPanel Orientation="Horizontal">
-                                <Label MinWidth="90" VerticalAlignment="Center">Прямоугольник</Label>
-                                <Image Source="./Images/rectangle.png" MaxWidth="30"/>
-                            </StackPanel>
-                        </RadioButton>
-                        <RadioButton Style="{StaticResource {x:Type ToggleButton}}">
-                            <StackPanel Orientation="Horizontal">
-                                <Label MinWidth="90" VerticalAlignment="Center">Многоугольник</Label>
-                                <Image Source="./Images/polygon.png" MaxWidth="30"/>
-                            </StackPanel>
-                        </RadioButton>
-                        <RadioButton Style="{StaticResource {x:Type ToggleButton}}">
-                            <StackPanel Orientation="Horizontal">
-                                <Label MinWidth="90" VerticalAlignment="Center">Эллипс</Label>
-                                <Image Source="./Images/ellipse.png" MaxWidth="30"/>
-                            </StackPanel>
-                        </RadioButton>
-                    </StackPanel>
+                    <StackPanel Name="shapePanel"></StackPanel>
                 </ScrollViewer>
             </Grid>
         </Border>
         
-        <Canvas Name="MainCanvas" Grid.Row="1" Grid.Column="1"></Canvas>
+        <Canvas Name="mainCanvas" Grid.Row="1" Grid.Column="1" Background="White"></Canvas>
     </Grid>
 </Window>

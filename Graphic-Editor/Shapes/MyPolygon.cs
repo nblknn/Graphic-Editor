@@ -9,14 +9,15 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace Graphic_Editor.Shapes {
-    internal class MyPolygon : MyShape {
-        public PointCollection points { get; set; }
+    internal class MyPolygon : MyComplexShape {
+        private Polygon drawnPolygon;
 
         public MyPolygon(Point startPoint, Color outlineColor, Color fillColor, double outlineThickness) {
-            this.points = new PointCollection() { startPoint };
+            points = new PointCollection() { startPoint };
             this.outlineColor = outlineColor;
             this.fillColor = fillColor;
             this.outlineThickness = outlineThickness;
+            drawnPolygon = new Polygon();
         }
 
         public MyPolygon(PointCollection points, Color outlineColor, Color fillColor, double outlineThickness) {
@@ -24,15 +25,25 @@ namespace Graphic_Editor.Shapes {
             this.outlineColor = outlineColor;
             this.fillColor = fillColor;
             this.outlineThickness = outlineThickness;
+            drawnPolygon = new Polygon();
         }
 
         public override void Draw(Canvas canvas) {
-            Polygon polygon = new Polygon();
-            polygon.Points = points;
-            polygon.Stroke = new SolidColorBrush(outlineColor);
-            polygon.Fill = new SolidColorBrush(fillColor);
-            polygon.StrokeThickness = outlineThickness;
-            canvas.Children.Add(polygon);
+            drawnPolygon.Points = points;
+            drawnPolygon.Stroke = new SolidColorBrush(outlineColor);
+            drawnPolygon.Fill = new SolidColorBrush(fillColor);
+            drawnPolygon.StrokeThickness = outlineThickness;
+            canvas.Children.Add(drawnPolygon);
+        }
+
+        public override void AddPoint(Point point) {
+            points.Add(point);
+            drawnPolygon.Points.Add(point);
+        }
+
+        public override void Redraw(Point nextPoint) {
+            points[points.Count - 1] = nextPoint;
+            drawnPolygon.Points[points.Count - 1] = nextPoint;
         }
     }
 }
