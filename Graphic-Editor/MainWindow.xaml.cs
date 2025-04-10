@@ -75,5 +75,13 @@ namespace Graphic_Editor {
             canvasManager.outlineColor = colorDisplay.SelectedColor;
             canvasManager.fillColor = colorDisplay.SecondaryColor;
         }
+
+        private void UndoCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e) {
+            canvasManager.Undo();
+        }
+
+        private void RedoCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e) {
+            canvasManager.Redo();
+        }
     }
 }

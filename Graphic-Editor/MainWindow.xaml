@@ -10,6 +10,14 @@
     <Window.Resources>
         <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="RadioButton"/>
     </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="Undo" Executed="UndoCommandBinding_Executed" />
+        <CommandBinding Command="Redo" Executed="RedoCommandBinding_Executed" />
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Key="Z" Modifiers="Control" Command="Undo"/>
+        <KeyBinding Key="Y" Modifiers="Control" Command="Redo"/>
+    </Window.InputBindings>
     <Grid Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>
@@ -26,8 +34,8 @@
                 <MenuItem Header="Сохранить" InputGestureText="Ctrl+S"></MenuItem>
             </MenuItem>
             <MenuItem Header="Редактировать">
-                <MenuItem Header="Отменить" InputGestureText="Ctrl+Z"></MenuItem>
-                <MenuItem Header="Повторить" InputGestureText="Ctrl+Y"></MenuItem>
+                <MenuItem Header="Отменить" InputGestureText="Ctrl+Z" Command="Undo"></MenuItem>
+                <MenuItem Header="Повторить" InputGestureText="Ctrl+Y" Command="Redo"></MenuItem>
             </MenuItem>
             <MenuItem Header="Плагины">
                 <MenuItem Header="Загрузить"></MenuItem>

@@ -13,27 +13,23 @@ namespace Graphic_Editor.Drawers {
 
         public MyComplexShapeDrawer(CanvasManager canvasManager) {
             this.canvasManager = canvasManager;
-            isFinishedDrawing = true;
+            isDrawing = false;
         }
 
         private void MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
-            if (isFinishedDrawing) {
-                shape = (MyComplexShape)canvasManager.selectedFactory.Create(e.GetPosition(canvasManager.canvas), canvasManager.outlineColor,
-                    canvasManager.fillColor, canvasManager.outlineThickness);
-                shape.Draw(canvasManager.canvas);
-                isFinishedDrawing = false;
+            if (!isDrawing) {
+                StartDrawing(e);
             }
             shape.AddPoint(e.GetPosition(canvasManager.canvas));
         }
 
         private void MouseMove(object sender, MouseEventArgs e) {
-            if (!isFinishedDrawing)
+            if (isDrawing)
                 shape.Redraw(e.GetPosition(canvasManager.canvas));
         }
 
         private void MouseRightButtonDown(object sender, MouseButtonEventArgs e) {
-            isFinishedDrawing = true;
-            canvasManager.AddShape(shape);
+            StopDrawing();
         }
 
         public override void SetHandlers() {
@@ -46,6 +42,18 @@ namespace Graphic_Editor.Drawers {
             canvasManager.canvas.MouseLeftButtonDown -= MouseLeftButtonDown;
             canvasManager.canvas.MouseMove -= MouseMove;
             canvasManager.canvas.MouseRightButtonDown -= MouseRightButtonDown;
+        }
+
+        public override void StartDrawing(MouseButtonEventArgs e) {
+            shape = (MyComplexShape)canvasManager.selectedFactory.Create(e.GetPosition(canvasManager.canvas), canvasManager.outlineColor,
+                    canvasManager.fillColor, canvasManager.outlineThickness);
+            shape.Draw(canvasManager.canvas);
+            isDrawing = true;
+        }
+
+        public override void StopDrawing() {
+            isDrawing = false;
+            canvasManager.AddShape(shape);
         }
     }
 }

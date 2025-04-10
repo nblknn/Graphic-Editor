@@ -12,7 +12,7 @@ using Graphic_Editor.Drawers;
 namespace Graphic_Editor {
     internal class CanvasManager {
         public Canvas canvas { get; private set; }
-        private Stack<MyShape> undoStack;
+        private List<MyShape> shapeList;
         private Stack<MyShape> redoStack;
         public List<MyShapeFactory> shapeFactories { get; private set; }
         public MyShapeFactory selectedFactory { get; private set; }
@@ -24,7 +24,7 @@ namespace Graphic_Editor {
 
         public CanvasManager(Canvas canvas) {
             this.canvas = canvas;
-            undoStack = new Stack<MyShape>();
+            shapeList = new List<MyShape>();
             redoStack = new Stack<MyShape>();
             shapeFactories = new List<MyShapeFactory>() { new MyLineFactory(), new MyPolylineFactory(),
                 new MyRectangleFactory(), new MyPolygonFactory(), new MyEllipseFactory() };
@@ -45,8 +45,36 @@ namespace Graphic_Editor {
             selectedDrawer.SetHandlers();
         }
 
-        public void AddShape(MyShape shape) { }
-        public void Undo() { }
-        public void Redo() { }
+        public void AddShape(MyShape shape) {
+            redoStack.Clear();
+            shapeList.Add(shape);
+        }
+
+        public void DrawAllShapes() {
+            foreach (MyShape shape in shapeList) {
+                shape.Draw(canvas);
+            }
+        }
+
+        public void Undo() {
+            if (selectedDrawer.isDrawing) {
+                selectedDrawer.StopDrawing();
+            }
+            if (shapeList.Count > 0) {
+                canvas.Children.Remove(canvas.Children[canvas.Children.Count - 1]);
+                redoStack.Push(shapeList[shapeList.Count - 1]);
+                shapeList.RemoveAt(shapeList.Count - 1);
+            }
+        }
+        public void Redo() {
+            if (selectedDrawer.isDrawing) {
+                selectedDrawer.StopDrawing();
+            }
+            if (redoStack.Count > 0) {
+                MyShape shape = redoStack.Pop();
+                shape.Draw(canvas);
+                shapeList.Add(shape);
+            }
+        }
     }
 }
