@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -9,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Graphic_Editor.ShapeFactories;
+using Microsoft.Win32;
 
 namespace Graphic_Editor {
     /// <summary>
@@ -82,6 +84,22 @@ namespace Graphic_Editor {
 
         private void RedoCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e) {
             canvasManager.Redo();
+        }
+
+        private void OpenCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e) {
+            OpenFileDialog openFileDialog = new OpenFileDialog() {
+                Filter = "Shapes files (*.shp)|*.shp",
+            };
+            if (openFileDialog.ShowDialog() == false) return;
+            canvasManager.Deserialize(File.ReadAllText(openFileDialog.FileName));
+        }
+
+        private void SaveCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e) {
+            SaveFileDialog saveFileDialog = new SaveFileDialog() {
+                Filter = "Shapes files (*.shp)|*.shp",
+            };
+            if (saveFileDialog.ShowDialog() == false) return;
+            File.WriteAllText(saveFileDialog.FileName, canvasManager.Serialize());
         }
     }
 }

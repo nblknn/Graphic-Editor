@@ -13,10 +13,14 @@
     <Window.CommandBindings>
         <CommandBinding Command="Undo" Executed="UndoCommandBinding_Executed" />
         <CommandBinding Command="Redo" Executed="RedoCommandBinding_Executed" />
+        <CommandBinding Command="Open" Executed="OpenCommandBinding_Executed" />
+        <CommandBinding Command="Save" Executed="SaveCommandBinding_Executed" />
     </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Key="Z" Modifiers="Control" Command="Undo"/>
         <KeyBinding Key="Y" Modifiers="Control" Command="Redo"/>
+        <KeyBinding Key="O" Modifiers="Control" Command="Open"/>
+        <KeyBinding Key="S" Modifiers="Control" Command="Save"/>
     </Window.InputBindings>
     <Grid Name="MainGrid">
         <Grid.RowDefinitions>
@@ -30,8 +34,8 @@
         
         <Menu Grid.Row="0" Grid.ColumnSpan="2">
             <MenuItem Header="Файл">
-                <MenuItem Header="Открыть..." InputGestureText="Ctrl+O"></MenuItem>
-                <MenuItem Header="Сохранить" InputGestureText="Ctrl+S"></MenuItem>
+                <MenuItem Header="Открыть..." InputGestureText="Ctrl+O" Command="Open"></MenuItem>
+                <MenuItem Header="Сохранить" InputGestureText="Ctrl+S" Command="Save"></MenuItem>
             </MenuItem>
             <MenuItem Header="Редактировать">
                 <MenuItem Header="Отменить" InputGestureText="Ctrl+Z" Command="Undo"></MenuItem>

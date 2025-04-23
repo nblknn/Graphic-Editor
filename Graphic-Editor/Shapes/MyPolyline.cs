@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using Newtonsoft.Json;
 
 namespace Graphic_Editor.Shapes {
     internal class MyPolyline : MyComplexShape {
@@ -20,6 +21,7 @@ namespace Graphic_Editor.Shapes {
             drawnPolyline = new Polyline();
         }
 
+        [JsonConstructor]
         public MyPolyline(PointCollection points, Color outlineColor, double outlineThickness) {
             this.points = points;
             this.outlineColor = outlineColor;

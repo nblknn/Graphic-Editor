@@ -49,6 +49,7 @@ namespace Graphic_Editor.Drawers {
         }
 
         public override void StopDrawing() {
+            if (!isDrawing) return;
             canvasManager.AddShape(shape);
             isDrawing = false;
         }

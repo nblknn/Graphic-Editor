@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows;
+using Newtonsoft.Json;
 
 namespace Graphic_Editor.Shapes {
     internal class MyRectangle : MyShape {
@@ -23,6 +24,7 @@ namespace Graphic_Editor.Shapes {
             drawnRectangle = new Rectangle();
         }
 
+        [JsonConstructor]
         public MyRectangle(Point point1, Point point2, Color outlineColor, Color fillColor, double outlineThickness) {
             this.point1 = point1;
             this.point2 = point2;
