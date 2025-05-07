@@ -1,15 +1,10 @@
 ﻿using System.IO;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using Graphic_Editor.ShapeFactories;
+using Graphic_Editor.Shapes;
 using Microsoft.Win32;
 
 namespace Graphic_Editor {
@@ -18,7 +13,6 @@ namespace Graphic_Editor {
     /// </summary>
     public partial class MainWindow : Window {
         CanvasManager canvasManager;
-        RadioButton[] buttons;
 
         public MainWindow() {
             InitializeComponent();
@@ -31,32 +25,41 @@ namespace Graphic_Editor {
         }
 
         private void CreateShapeButtons() {
-            String[] shapeNames = new String[] { "Прямая", "Ломаная", "Прямоугольник", "Многоугольник", "Эллипс" };
-            String[] shapeImages = new String[] { "./Images/line.png", "./Images/polyline.png",
-                "./Images/rectangle.png", "./Images/polygon.png", "./Images/ellipse.png" };
-            buttons = new RadioButton[canvasManager.shapeFactories.Count];
+            RadioButton[] buttons = new RadioButton[canvasManager.shapeFactories.Count];
             for (int i = 0; i < buttons.Length; i++) {
-                Label label = new Label() {
-                    MinWidth = 90,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    Content = shapeNames[i],
-                };
-                Image image = new Image() {
-                    MaxWidth = 30,
-                    Source = new BitmapImage(new Uri(shapeImages[i], UriKind.Relative)),
-                };
-                StackPanel stackPanel = new StackPanel() {
-                    Orientation = Orientation.Horizontal,
-                    Children = { label, image },
-                };
-                buttons[i] = new RadioButton() {
-                    Content = stackPanel,
-                    Tag = canvasManager.shapeFactories[i],
-                };
-                buttons[i].Checked += RadioButton_Checked;
-                shapePanel.Children.Add(buttons[i]);
+                buttons[i] = CreateShapeButton(canvasManager.shapeFactories[i]);
             }
             buttons[0].IsChecked = true;
+        }
+
+        private RadioButton CreateShapeButton(MyShapeFactory shapeFactory) {
+            Canvas canvas = new Canvas() { Height = 30, Width = 30, Margin = new Thickness(1) };
+            MyShape testShape = shapeFactory.Create(new Point(0, 2), Colors.Black, Colors.Transparent, 1);
+            testShape.Draw(canvas);
+            if (testShape is MyComplexShape complexShape) {
+                complexShape.Redraw(new Point(15, 0));
+                complexShape.AddPoint(new Point(0, 30));
+                complexShape.AddPoint(new Point(30, 20));
+            }
+            else {
+                testShape.Redraw(new Point(30, 28));
+            }
+            Label label = new Label() {
+                MinWidth = 90,
+                VerticalAlignment = VerticalAlignment.Center,
+                Content = testShape.ToString(),
+            };
+            StackPanel stackPanel = new StackPanel() {
+                Orientation = Orientation.Horizontal,
+                Children = { label, canvas },
+            };
+            RadioButton button = new RadioButton() {
+                Content = stackPanel,
+                Tag = shapeFactory,
+            };
+            button.Checked += RadioButton_Checked;
+            shapePanel.Children.Add(button);
+            return button;
         }
 
         private void RadioButton_Checked(object sender, RoutedEventArgs e) {
@@ -100,6 +103,17 @@ namespace Graphic_Editor {
             };
             if (saveFileDialog.ShowDialog() == false) return;
             File.WriteAllText(saveFileDialog.FileName, canvasManager.Serialize());
+        }
+
+        private void LoadPlugins_Click(object sender, RoutedEventArgs e) {
+            OpenFileDialog openFileDialog = new OpenFileDialog() {
+                Filter = "Libraries (*.dll)|*.dll",
+            };
+            if (openFileDialog.ShowDialog() == false) return;
+            List<MyShapeFactory>? factories = canvasManager.LoadPlugin(openFileDialog.FileName);
+            if (factories != null)
+                foreach (MyShapeFactory factory in factories)
+                    CreateShapeButton(factory);
         }
     }
 }

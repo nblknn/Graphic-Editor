@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows;
@@ -51,6 +46,10 @@ namespace Graphic_Editor.Shapes {
             drawnRectangle.Width = Math.Abs(point2.X - point1.X);
             Canvas.SetLeft(drawnRectangle, Math.Min(point1.X, point2.X));
             Canvas.SetTop(drawnRectangle, Math.Min(point1.Y, point2.Y));
+        }
+
+        public override string ToString() {
+            return "Прямоугольник";
         }
     }
 }

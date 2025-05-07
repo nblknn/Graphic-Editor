@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Graphic_Editor"
         xmlns:clrp="clr-namespace:ColorPicker;assembly=ColorPicker"
         mc:Ignorable="d"
-        Title="nbldtr" Height="450" Width="800" MinHeight="350" MinWidth="500" WindowStartupLocation="CenterScreen">
+        Title="nbldtr" Height="500" Width="800" MinHeight="350" MinWidth="500" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="RadioButton"/>
     </Window.Resources>
@@ -42,7 +42,7 @@
                 <MenuItem Header="Повторить" InputGestureText="Ctrl+Y" Command="Redo"></MenuItem>
             </MenuItem>
             <MenuItem Header="Плагины">
-                <MenuItem Header="Загрузить"></MenuItem>
+                <MenuItem Header="Загрузить" Click="LoadPlugins_Click"></MenuItem>
             </MenuItem>
         </Menu>
         
@@ -76,7 +76,7 @@
                 </ScrollViewer>
             </Grid>
         </Border>
-        
-        <Canvas Name="mainCanvas" Grid.Row="1" Grid.Column="1" Background="White"></Canvas>
+
+        <Canvas Name="mainCanvas" Grid.Row="1" Grid.Column="1" Background="White" ClipToBounds="True"></Canvas>
     </Grid>
 </Window>

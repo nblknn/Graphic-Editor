@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -44,6 +39,10 @@ namespace Graphic_Editor.Shapes {
         public override void Redraw(Point nextPoint) {
             points[points.Count - 1] = nextPoint;
             drawnPolyline.Points[points.Count - 1] = nextPoint;
+        }
+
+        public override string ToString() {
+            return "Ломаная";
         }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using System.Windows.Controls;
 using Graphic_Editor.Shapes;
 using Graphic_Editor.ShapeFactories;
@@ -22,6 +17,7 @@ namespace Graphic_Editor {
         public List<MyDrawer> drawers {  get; private set; }
         public MyDrawer selectedDrawer { get; private set; }
         public ShapeSerializer serializer { get; private set; }
+        public PluginLoader pluginLoader { get; private set; }
         public Color fillColor { get; set; }
         public Color outlineColor { get; set; }
         public double outlineThickness { get; set; }
@@ -35,6 +31,7 @@ namespace Graphic_Editor {
                 new MyRectangleFactory(), new MyPolygonFactory(), new MyEllipseFactory() };
             drawers = new List<MyDrawer>() { new MyShapeDrawer(this), new MyComplexShapeDrawer(this) };
             serializer = new JSONShapeSerializer();
+            pluginLoader = new PluginLoader();
             SetFactory(shapeFactories[0]);
         }
 
@@ -109,6 +106,19 @@ namespace Graphic_Editor {
             catch (Newtonsoft.Json.JsonException) {
                 MessageBox.Show("Ошибка при чтении файла", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        public List<MyShapeFactory>? LoadPlugin(string path) {
+            List<MyShapeFactory>? factories = null;
+            try {
+                factories = pluginLoader.LoadPlugin(path);
+                foreach (MyShapeFactory factory in factories)
+                    shapeFactories.Add(factory);
+            }
+            catch {
+                MessageBox.Show("Ошибка при загрузке плагина", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            return factories;
         }
     }
 }
