@@ -10,21 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Images\ellipse.png" />
-    <None Remove="Images\line.png" />
-    <None Remove="Images\polygon.png" />
-    <None Remove="Images\polyline.png" />
-    <None Remove="Images\rectangle.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Images\ellipse.png" />
-    <Resource Include="Images\rectangle.png" />
-    <Resource Include="Images\polygon.png" />
-    <Resource Include="Images\line.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\polyline.png" />
+    <Compile Remove="Images\**" />
+    <EmbeddedResource Remove="Images\**" />
+    <None Remove="Images\**" />
+    <Page Remove="Images\**" />
   </ItemGroup>
 
   <ItemGroup>
